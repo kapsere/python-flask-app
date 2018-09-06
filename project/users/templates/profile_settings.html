@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% block metadescription %}Profile Settings page{% endblock %}
+{% block pagetitle %}Profile Settings{% endblock %}
+{% block content %}
+<section id="profiledetails">
+<br><br>   
+  <div class="container text-center">
+    <div class="col-md-4 col-sm-12 col-xs-12"><!-- PROFILE PICTURE --> 
+        <div class="profile-picture-box">
+          <div class="user-profile">
+            {% if current_user.image_url %}
+            <img src="{{current_user.image_url}}" class="img-responsive profile-pic-big"/>
+            {% else %}
+            <span class="glyphicon glyphicon-user profile-pic-placeholder-175"></span>
+            {% endif %}  
+          </div>
+          <div class="upload-button-box">
+            <p class="upload-button-box-text">{{ current_user.name }}</p>
+            <form action="{{ url_for('users.add_profilepicture') }}" name="form" method="POST" enctype="multipart/form-data">
+            {{ profile_picture_form.csrf_token }}
+              <label class="btn btn-primary btn-upload">
+              Upload Profile Picture<input type="file" name="picture" id="upload" accept="image/*" onchange="form.submit();" class="text-center center-block" >
+              </label>
+            </form>
+          </div> 
+        </div>
+    </div> <!-- END PROFILE PICTURE -->
+  
+    <div class="col-md-8 col-sm-12 col-xs-12"> <!-- CHANGE USER INFO -->
+      <div class="profile-details-box">
+        <form class="form-reset" role="form" method="post" action="{{ url_for('users.update_settings')}}">
+        {{ profile_info_form.csrf_token }} 
+        <br>
+          <div class="form-group">
+            <div class="col-md-3">
+              <p class="control-label">Username</p>
+            </div>
+            <div class="col-md-9">
+              <p>
+              {{ profile_info_form.name(value=current_user.name, class_="form-control") }}
+              <span class="error">
+              {% if profile_info_form.name.errors %}
+              {% for error in profile_info_form.name.errors %}
+                {{ error }}
+              {% endfor %}
+              {% endif %}
+              </span>
+              </p>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-md-3">
+              <p class="control-label">Email</p>
+            </div>
+            <div class="col-md-9">
+              <p>
+              {{ profile_info_form.email(value=current_user.email, class_="form-control") }}
+              <span class="error">
+              {% if profile_info_form.email.errors %}
+              {% for error in profile_info_form.email.errors %}
+                {{ error }}
+              {% endfor %}
+              {% endif %}
+              </span>
+              </p>
+            </div>
+          </div> 
+          <div class="form-group">
+            <div class="col-md-3">
+              <p class="control-label">About Me</p>
+            </div>
+            <div class="col-md-9">
+              <p>
+              {{ profile_info_form.about_user(Placeholder='Write Something Here(Character Limit is 150)' , class_="form-control", rows=5) }}
+              <span class="error">
+              {% if profile_info_form.about_user.errors %}
+              {% for error in profile_info_form.about_user.errors %}
+                {{ error }}
+              {% endfor %}
+              {% endif %}
+              </span>
+              </p>
+            </div>
+          </div>  
+          <div class="col-md-9 col-md-offset-3">
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Update Profile</button>
+          </div>
+        </form>
+      </div>  
+    </div><!-- END CHANGE USER INFO -->
+  </div>
+</section>
+{% endblock %}

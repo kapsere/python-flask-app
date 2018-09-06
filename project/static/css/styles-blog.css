@@ -1,0 +1,260 @@
+/* General padding/margin classes */
+.pad-30 {
+  padding:0px 30px;
+}
+/* Sidebar */
+.sidebar a {
+  text-align: left;
+  text-decoration: none;
+  color: #333;
+}
+.sidebar a:hover {
+  color: #23527c;
+}
+.sidebar ul {
+  list-style-type:none;
+  padding-left:0px;
+}
+.secondary-nav-list {
+  list-style-type:none;
+}
+@media screen and(max-width:768px) {
+  .sidebar {
+      display:none;
+  }
+}
+/* Blog index post styles */
+#blog-index {
+  padding-bottom: 5em;
+}
+.blog-post.clearfix {
+  margin: 0 0 20px 0;
+}
+.blog-post-link {
+  text-decoration: none;
+  text-align: left;
+  font-size: 24px;
+  margin: 15px 0;
+  color: #333;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+.blog-post-link:hover {
+ text-decoration:none;
+}
+.author-profile-link {
+  text-align: left;
+  display: inline;
+  text-decoration: none;
+  color: #333;
+}
+.author-profile-link:hover {
+  text-decoration:none;
+}
+.glyphicon-user,.glyphicon-calendar {
+  margin-right:5px;
+}
+.glyphicon-calendar {
+  margin-left:5px;
+}
+/* Blog Post Preview img styling */
+.blog-post-inner>p:nth-child(4)>img {
+  width: 100%!important;
+  height: auto!important;
+  margin-bottom: 25px;
+}
+/* hide all images except the first preview image */
+.blog-post-inner>p:nth-child(4)>img:nth-child(n+2) {
+  display: none;
+}
+/* Blog Search icon */
+input#search {
+  padding: 5px 25px;
+}
+.form-group {
+  position:relative;
+}
+.input-icon-search {
+  position: absolute;
+  top: 24%;
+  left: 3%;
+}
+/* pagination */
+.pagination-link {
+  display: inline-block;
+  padding: 10px 10px;
+  background: #EEE;
+  border-radius: 4px;
+}
+/* Blog post detail */
+#blog-post {
+  padding:3em 0;
+}
+.blog-post-detail-title {
+  display: inline-block;
+  margin-right:10px;
+  text-transform: uppercase;
+}
+/* delete post btn */
+.delete-post {
+  display: inline-block;
+  margin-bottom: 16px;
+}
+/* delete post form */
+.delete-form {
+  display: inline-block;
+}
+/* Blog Post detail author information */
+.author-info {
+  margin-top: 8px;
+}
+.author-info>a {
+  color:#333;
+  display: inline;
+}
+.author-info>a:hover {
+  text-decoration:none;
+  color: #23527c;
+}
+.author-picture-small {
+  text-align: left;
+  font-size: 50px;
+  vertical-align: middle;
+  display: inline-block;
+  width: 50px;
+  height: 50px;
+  overflow: hidden;
+  border-radius: 50%;
+  margin-right: 5px;
+}
+.author {
+  width:100%;
+}
+.author-picture-small>a {
+  color:#333;
+  display: inline;
+}
+.author-picture-small>a:hover {
+  color: #23527c;
+}
+/* date */
+.date-info {
+  font-size: 40px;
+  vertical-align: middle;
+}
+.glyphicon-calendar {
+  margin-left: 5px;
+  vertical-align: middle;
+}
+.date-info>strong>span {
+  font-size: 14px;
+  vertical-align: middle;
+}
+/* Post Content */
+.blog-post-content {
+  display:inline-block;
+}
+/* Blog post detail image stylings */
+.blog-post-content>p>a>img {
+  width: 100%!important;
+  height: auto!important;
+}
+/* Comments styles */
+/* Comment form textarea */
+#comment {
+  min-width: 100%;
+  min-height: 50px;
+  max-width: 100%;
+  margin-bottom:15px;
+}
+/* comment submit btn */
+.btn-submit-comment {
+  margin-bottom: 15px;
+}
+/* comment count */
+.c-count-b {
+  color: #337ab7;
+}
+.row.comment {
+  margin: 15px 0;
+}
+.comment-author-info {
+  border-radius: 0;
+  font-size: 45px;
+  margin-bottom:10px;
+}
+@media screen and(max-width:768px) {
+  .comment-author-info {
+    text-align:left;
+    display: inline-block;
+  }
+}
+.comment-picture-small {
+  width: 75px;
+  height: 75px;
+  overflow: hidden;
+  text-align: center;
+  margin: auto;
+  border-radius: 50%;
+}
+.comment-picture-small>a>span {
+  background: #EEE;
+  padding: 15px;
+  border-radius: 50%;
+}
+.comment-box {
+  background: #EEE;
+  padding: 15px;
+}
+.comment-box>p>a {
+  display: inline;
+}
+.comment-author-profile-link:hover {
+  text-decoration: none;
+}
+/* delete comment btn */
+.delete-comment {
+  position: absolute;
+  top: 16%;
+  right: 5%;
+  background: transparent;
+  border: none;
+  color: #dc3545;
+}
+.delete-comment>span {
+  margin-right:5px;
+}
+@media screen and (max-width:991px) {
+.delete-comment {
+  top: 31%;
+}
+}
+@media screen and (max-width:500px) {
+.delete-comment {
+  position:relative;
+  right:0%;
+  left:0%;
+  padding: 0;
+}
+}
+/* modal */
+.modal-title {
+  display:inline-block;
+}
+
+
+/* Add Post page */
+#submit {
+  float: left;
+}
+label {
+  text-align: left;
+  display: block;
+  font-size: 18px;
+  margin: 15px auto;
+}
+
+/* blog search page */
+#blog-search {
+  padding-bottom: 5em;
+}

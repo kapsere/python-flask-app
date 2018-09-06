@@ -1,0 +1,161 @@
+{% extends "base.html" %}
+{% block metadescription %}Profile page{% endblock %}
+{% block pagetitle %}Profile{% endblock %}
+{% block content %}
+<section id="user-profile">
+<br><br>   
+<div class="container text-center">
+  <div class="col-md-12 col-sm-12 col-xs-12"><!-- PROFILE PICTURE --> 
+      <div class="grey-box-profile-big">
+        <div class="user-profile">
+          {% if user.image_url %}
+          <img src="{{user.image_url}}" class="img-responsive profile-pic-big"/>
+          {% else %}
+          <span class="glyphicon glyphicon-user profile-pic-placeholder-175"></span>
+          {% endif %}
+        </div>
+        <h1 class="profile-user-name">{{ user.name }}</h1>
+        <h5 class="profile-user-role">{{ user.role }}</h5>
+        {% if user.id == current_user.id %}
+        <a href='{{url_for ("users.profile_settings")}}' class="btn btn-primary" role="button">Edit Profile</i></a>
+        {% elif not current_user.is_following(user) %}
+        <a href="{{ url_for('users.follow', username=user.name) }}" class="btn btn-success button-follow">Follow</a>
+        {% else %}
+        <a href="{{ url_for('users.unfollow', username=user.name) }}" class="btn btn-danger button-unfollow">Unfollow</a>
+        {% endif %}
+        <div class="user-bio">
+            {% if user.about %}
+              <h4>{{ user.about }}</h4>
+              {% else %}
+              <h4>This user does not have a bio yet...</h4>
+            {% endif %}
+        </div>
+        <div class="col-xs-6 col-sm-3 col-sm-offset-3 col-md-3 col-md-offset-3"><h3><span class="f-count-b">{{ user.followers.count() }}</span> Followers</h3></div>
+        <div class="col-xs-6 col-sm-3 col-md-3"><h3><span class="f-count-b">{{ user.followed.count() }}</span> Following</h3></div>
+      </div>
+  </div> <!-- END PROFILE PICTURE -->
+</div>
+
+<div class="container text-center">
+  <div class="col-md-12 col-sm-12 col-xs-12"><!-- PROFILE PICTURE --> 
+        <div class="grey-box-profile-med" id="grey-box-follower-followed">
+          <ul class="nav nav-tabs nav-justified">
+            <li class="active"><a data-toggle="tab" href="#followers">Followers</a></li>
+            <li><a data-toggle="tab" href="#following">Following</a></li>
+          </ul>
+          
+          <div class="tab-content">
+            <div id="followers" class="tab-pane active">
+              <div class="col-xs-12 col-sm-12 col-md-12 main-carousel">  
+              {% for follower in user.followers %}
+              <div class="carousel-cell">
+              <a href="{{url_for ('users.profile', username=follower.name)}}" class="follow-img-link">
+                    {% if follower.image_url %}
+                    <img data-flickity-lazyload="{{follower.image_url}}" class="flickity-img"></a>
+                    {% else %}
+                    <span class="glyphicon glyphicon-user profile-pic-placeholder-150"></span></a>
+                    {% endif %}
+              </div>    
+                    {% else %}
+                    <h4>No followers yet...</h4>
+                    {% endfor %}
+              </div>        
+            </div>
+            <div id="following" class="tab-pane">
+              <div class="col-xs-12 col-sm-12 col-md-12 main-carousel">
+              {% for followed in user.followed %}
+              <div class="carousel-cell">
+                    <a href="{{url_for ('users.profile', username=followed.name)}}" class="follow-img-link">
+                    {% if followed.image_url %}
+                    <img data-flickity-lazyload="{{followed.image_url}}" class="flickity-img"></a>
+                    {% else %}
+                    <span class="glyphicon glyphicon-user profile-pic-placeholder-150"></span></a>
+                    {% endif %}
+               </div>    
+                    {% else %}
+                    <h4>Not following anyone yet...</h4>
+                    {% endfor %}
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        {% if user.role == "admin" %}
+        <div class="grey-box-profile-med" id="grey-box-posts">
+            <div class="recent-posts-title" ><h3>Recent Posts</h3></div>
+                <div id="posts-slider" class="carousel slide" data-ride="carousel" data-interval="false" ><!-- Carousel -->
+                  <!-- wrapper for slides -->
+                  <div class="carousel-inner" role="listbox">
+                        {% for post in posts %}
+                        <div class="item">
+                            <li><a href="{{url_for('blog.post_detail', slug=post.slug)}}" class="recent-blog-post-link">{{ post.title  | truncate(50) | safe }}</a></li>
+                        </div>
+                        {% else %}
+                        <h4>No recent posts...</h4>
+                        {% endfor %}
+                  </div>
+                  <!-- controls or next and prev buttons -->
+                  <a href="#posts-slider" class="left carousel-control" role="button" data-slide="prev">
+                      <span class="glyphicon glyphicon-chevron-left"></span>
+                      <span class="sr-only">Previous</span>
+                  </a>
+                  <a href="#posts-slider" class="right carousel-control" role="button" data-slide="next">
+                      <span class="glyphicon glyphicon-chevron-right"></span>
+                      <span class="sr-only">Next</span>
+                  </a>
+                </div><!-- End Carousel -->
+        </div>
+        <div class="grey-box-profile-med" id="grey-box-comments">
+            <div class="recent-comments-title"><h3>Recent Comments</h3></div>
+                <div id="comments-slider" class="carousel slide" data-ride="carousel" data-interval="false" ><!-- Carousel -->
+                  <!-- wrapper for slides -->
+                  <div class="carousel-inner" role="listbox">
+                        {% for comment in comments %}
+                        <div class="item">
+                            <a href="{{ url_for ('blog.post_detail', slug=comment.comment_post_title)}}" class="recent-comments">{{ comment.comment_content | truncate(50) | safe }}</a>
+                        </div>
+                        {% else %}
+                        <h4>No recent comments...</h4>
+                        {% endfor %}  
+                  </div>
+                  <!-- controls or next and prev buttons -->
+                  <a href="#comments-slider" class="left carousel-control" role="button" data-slide="prev">
+                      <span class="glyphicon glyphicon-chevron-left"></span>
+                      <span class="sr-only">Previous</span>
+                  </a>
+                  <a href="#comments-slider" class="right carousel-control" role="button" data-slide="next">
+                      <span class="glyphicon glyphicon-chevron-right"></span>
+                      <span class="sr-only">Next</span>
+                  </a>
+                </div><!-- End Carousel -->
+        </div>
+        {% else %}
+         <div class="grey-box-profile-med" id="grey-box-comments">
+            <div class="recent-comments-title"><h3>Recent Comments</h3></div>
+                <div id="comments-slider" class="carousel slide" data-ride="carousel" data-interval="false"><!-- Carousel -->
+                  <!-- wrapper for slides -->
+                  <div class="carousel-inner" role="listbox">
+                        {% for comment in comments %}
+                        <div class="item">
+                            <a href="{{ url_for ('blog.post_detail', slug=comment.comment_post_title)}}" class="recent-comments">{{ comment.comment_content | truncate(50) | safe }}</a>
+                        </div>
+                        {% else %}
+                        <h4>No recent comments...</h4>
+                        {% endfor %}  
+                  </div>
+                  <!-- controls or next and prev buttons -->
+                  <a href="#comments-slider" class="left carousel-control" role="button" data-slide="prev">
+                      <span class="glyphicon glyphicon-chevron-left"></span>
+                      <span class="sr-only">Previous</span>
+                  </a>
+                  <a href="#comments-slider" class="right carousel-control" role="button" data-slide="next">
+                      <span class="glyphicon glyphicon-chevron-right"></span>
+                      <span class="sr-only">Next</span>
+                  </a>
+                </div><!-- End Carousel -->
+        </div>
+        {% endif %}
+  </div> <!-- END PROFILE PICTURE -->
+</div>
+</section>
+{% endblock %}

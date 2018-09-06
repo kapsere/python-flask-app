@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+<br><br><br>
+<div class="container text-center">
+    <div class="row">
+        <div class="col-md-12">
+            <h1 class="confirm-title">Thank you for registering.</h1>
+            <p>A confirmation email has been sent to your email address. Please confirm your account to gain full access to the site.</p>
+            <p>Did not receive a confirmation email? <a href="{{url_for ('users.resend_confirmation') }}" class="resend-link">Resend</a> confirmation email.</p> 
+        </div>
+    </div>
+</div>
+{% endblock %}

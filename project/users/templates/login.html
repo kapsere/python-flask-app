@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block metadescription %}Login page{% endblock %}
+{% block pagetitle %}Login{% endblock %}
+{% block content %}
+<div class="container">
+  <form class="form-signin" role="form" method="post" action="">
+      <h1>Log in</h1>
+    {{ form.csrf_token }}
+    <p>
+      <div class="form-group">
+      {{ form.email(placeholder="Email", class_="form-control") }}
+      </div>
+      <span class="error">
+        {% if form.email.errors %}
+          {% for error in form.email.errors %}
+            {{ error }}
+          {% endfor %}
+        {% endif %}
+      </span>
+    </p>
+    <p>
+      <div class="form-group">
+      {{ form.password(placeholder="Password", class_="form-control") }}
+      </div>
+      <span class="error">
+        {% if form.password.errors %}
+          {% for error in form.password.errors %}
+            {{ error }}
+          {% endfor %}
+        {% endif %} 
+      </span>
+    </p>
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Log in</button>
+  </form>
+  <a href="{{ url_for ('users.reset') }}">Forgot your password?</a> 
+</div> 
+{% endblock %}

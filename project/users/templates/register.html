@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block metadescription %}Registration page{% endblock %}
+{% block pagetitle %}Register{% endblock %}
+{% block content %}
+<div class="container">
+  <form class="form-signin" role="form" method="post" action="">
+    <h1>Please Register</h1>
+    {{ form.csrf_token }}
+    <p>
+      <div class="form-group">
+      {{ form.username(placeholder="Username", class_="form-control") }}
+      </div>
+      <span class="error">
+        {% if form.username.errors %}
+          {% for error in form.username.errors %}
+            {{ error }}
+          {% endfor %}
+        {% endif %}
+      </span>
+    </p>
+    <p>
+    <div class="form-group">
+    {{ form.email(placeholder="Email", class_="form-control") }}
+    </div>
+      <span class="error">
+        {% if form.email.errors %}
+          {% for error in form.email.errors %}
+            {{ error }}
+          {% endfor %}
+        {% endif %}
+      </span>
+    </p>
+    <p>
+    <div class="form-group">
+    {{ form.password(placeholder="Password", class_="form-control") }}
+    </div>
+      <span class="error">
+        {% if form.password.errors %}
+          {% for error in form.password.errors %}
+            {{ error }}
+          {% endfor %}
+        {% endif %}
+      </span>
+    </p>
+    <p>
+    <div class="form-group">
+    {{ form.confirm(placeholder="Confirm Password", class_="form-control") }}
+    </div> 
+      <span class="error">
+        {% if form.confirm.errors %}
+          {% for error in form.confirm.errors %}
+            {{ error }}
+          {% endfor %}
+        {% endif %}
+      </span>
+    </p>
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>
+  </form>
+</div>
+{% endblock %}

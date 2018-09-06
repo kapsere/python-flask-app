@@ -1,0 +1,33 @@
+{% for comment in post.comments[5:] %}
+        <div class="row comment">
+          <div class="col-md-2">
+            <div class="comment-author-info">
+              <div class="comment-picture-small">
+                {% if comment.comment_author.image_url %}
+                <a href="{{ url_for ('users.profile', username=comment.comment_author.name) }}" title="comment-author-profile">
+                  <img src="{{ comment.comment_author.image_url }}" class="img-responsive author" alt="comment-author-profile-picture"/>
+                </a> 
+                {% else %}
+                <a href="{{ url_for ('users.profile', username=comment.comment_author.name) }}" title="comment-author-profile">
+                  <span class="glyphicon glyphicon-user"></span>
+                </a> 
+                {% endif %}
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-10">
+            <div class="comment-box">
+              <p class="comment-timestamp">{{ moment(comment.timestamp).format("On MMMM DD, YYYY HH:mm") }}, 
+              <a href="{{ url_for ('users.profile', username=comment.comment_author.name) }}" class="comment-author-profile-link" title="comment-author-profile">
+              {{ comment.comment_author.name }}</a> wrote :</p>
+              <p>{{ comment.comment_content }}</p>
+              {% if current_user.role == "admin" %}
+              <form class='delete-form-comment' method=post action="{{url_for ('blog.delete_comment', comment_id=comment.id, slug=post.slug) }}">
+                <button class="delete-comment"><span class="glyphicon glyphicon-trash"></span>Delete</button>
+              </form>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+{% endfor %}        

@@ -1,0 +1,31 @@
+*.pyc
+*.db
+
+#venv
+.project
+.env
+venv
+evars
+
+#cloud9
+.c9
+
+# cache 
+project/static/.webassets-cache/
+__pycache__/
+
+# uploads
+project/static/uploads/profile/
+project/static/uploads/blog/
+
+# assets
+project/static/gen/
+
+# migrations
+migrations/
+
+# db search
+whoosh_index/
+
+#
+project/robots.txt

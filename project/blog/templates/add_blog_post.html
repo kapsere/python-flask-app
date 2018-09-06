@@ -1,0 +1,63 @@
+{% extends "/blog/blog_post_editor.html" %}
+{% block pagetitle %}add Post{% endblock %}
+{% block content %}
+<section id="addpost">
+  <div class="container text-center">
+    <br>
+    <div class="col-md-8 col-md-offset-2">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+            <div class="alert alert-{{ category }} alert-dismissible" role="alert">
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              {{ message }}
+            </div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+    </div>
+  
+    <div class="col-md-8 col-md-offset-2">
+      <h1>What is on your mind {{ current_user.name }}?</h1>
+    </div>
+    
+    <br><br>
+    
+    <div class="col-md-8 col-md-offset-2">
+      <form method="POST" role="form" action="">
+        {{ form.hidden_tag() }}
+        <div class="form-group">
+            <label for="title">Title:</label>
+        {{ form.title(class_="form-control", placeholder="Write The Title Here...") }}
+        </div>
+        <p>
+          <span class="error">
+          {% if form.title.errors %}
+          {% for error in form.title.errors %}
+            {{ error }}
+          {% endfor %}
+          {% endif %}
+          </span>
+        </p>
+        <div class="form-group">
+            <label for="content">Content:</label>
+        {{ form.content(class_="form-control", html="true", rows="5") }}
+        </div>
+        <p>
+          <span class="error">
+          {% if form.content.errors %}
+          {% for error in form.content.errors %}
+            {{ error }}
+          {% endfor %}
+          {% endif %}
+          </span>
+        </p>    
+        {{ form.submit(class="btn btn-primary") }}
+      </form>    
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+
+

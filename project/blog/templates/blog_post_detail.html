@@ -1,0 +1,163 @@
+{% extends "/blog/blog_base.html" %}
+{% block pagetitle %}{{ post.title }}{% endblock %}
+{% block content %}
+<section id="blog-post">
+  <div class="container">
+    <div class="col-md-8  pad-30">
+      <h1 class="blog-post-detail-title">{{ post.title }}</h1>
+      {% if current_user.role == 'admin' %}
+      <button class="btn btn-danger delete-post" data-toggle="modal" data-target="#deleteModal">Delete this post</button>
+      {% endif %}
+    </div>
+  </div>
+  <div class="container">
+    <div class="col-md-8">
+      <!-- POST -->
+      <div class="col-md-6 col-sm-6">
+        <div class="author-info">
+          <div class="author-picture-small">
+            {% if post.author.image_url %}
+            <a href="{{ url_for ('users.profile', username=post.author.name) }}"><img src="{{ post.author.image_url }}" class="img-responsive author" alt="blog-author-picture"/></a> 
+            {% else %}
+            <a href="{{ url_for ('users.profile', username=post.author.name) }}" title="post-author-name"><span class="glyphicon glyphicon-user"></span></a> 
+            {% endif %}
+          </div>
+          <a href="{{ url_for ('users.profile', username=post.author.name)}}" title="post-author-name"><strong>{{ post.author.name }}</strong></a>
+        </div>
+      </div>
+      <div class="col-md-6 col-sm-6">
+        <div class="date-info">
+          <span class="glyphicon glyphicon-calendar"></span><strong>{{ moment(post.timestamp).format("LL") }}</strong>
+        </div>
+      </div>
+      <div class="col-md-12 blog-post-content">
+        <p>{{ post.content | safe }}</p>
+      </div>
+      <div class="comments-container">
+        <div class="col-md-12">
+          <h2 class="comments-head"><span class="c-count-b">{{post.comments|length}}</span> Comments</h2>
+          <hr>
+          <form class="form-inline" method="POST" action="{{url_for('blog.add_comment', slug=post.slug)}}" name="comment">
+            {{ form.csrf_token }}
+            <textarea class="form-control" name="comment" id="comment" placeholder="Write Your Comment Here..." rows="5"></textarea>
+            <button class="btn btn-primary btn-submit-comment" type=submit>Comment</button>
+          </form>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-md-12 pad-30"><!-- FLASH / ALERTS -->
+            {% with messages = get_flashed_messages(with_categories=true) %} 
+              {% if messages %} 
+                {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible" role="alert">
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> {{ message }}
+                </div>
+                {% endfor %} 
+              {% endif %} 
+            {% endwith %}
+          </div>
+        </div>
+        {% for comment in post.comments[:5] %}
+        <div class="row comment">
+          <div class="col-md-2">
+            <div class="comment-author-info">
+              <div class="comment-picture-small">
+                {% if comment.comment_author.image_url %}
+                <a href="{{ url_for ('users.profile', username=comment.comment_author.name) }}" title="comment-author-profile">
+                  <img src="{{ comment.comment_author.image_url }}" class="img-responsive author" alt="comment-author-profile-picture"/>
+                </a> 
+                {% else %}
+                <a href="{{ url_for ('users.profile', username=comment.comment_author.name) }}" title="comment-author-profile">
+                  <span class="glyphicon glyphicon-user"></span>
+                </a> 
+                {% endif %}
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-10">
+            <div class="comment-box">
+              <p class="comment-timestamp">{{ moment(comment.timestamp).format("On MMMM DD, YYYY HH:mm") }}, 
+              <a href="{{ url_for ('users.profile', username=comment.comment_author.name) }}" class="comment-author-profile-link" title="comment-author-profile">
+              {{ comment.comment_author.name }}</a> wrote :</p>
+              <p>{{ comment.comment_content }}</p>
+              {% if current_user.role == "admin" %}
+              <form class='delete-form-comment' method=post action="{{url_for ('blog.delete_comment', comment_id=comment.id, slug=post.slug) }}">
+                <button class="delete-comment"><span class="glyphicon glyphicon-trash"></span>Delete</button>
+              </form>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+        {% else %}
+        <div class="col-md-12 no-pad">
+          <p>No comments here yet...</p>
+        </div>
+        {% endfor %}
+      </div>
+      <!--LOAD MORE COMMENTS-->
+      {% if post.comments|length > 5 %}
+      <div class="col-md-12">
+        <button class="btn btn-primary load-more">Show more</button> 
+      </div>
+      {% endif %}
+      <!-- END LOAD MORE COMMENTS -->
+    </div>
+
+    <!-- SIDEBAR -->
+    <div class="col-md-4 sidebar pad-30">
+      <div class="blog-search">
+        <h3>Search Posts</h3>
+        <hr>
+        <form class="form-inline" method="POST" action="{{ url_for('blog.search') }}" name="search">
+          {{ form.csrf_token }}
+          <div class="form-group">
+            <div class="input-icon-search">
+              <span class="glyphicon glyphicon-search"></span>
+            </div>
+            <input type="text" class="form-control" name="search" id="search" Placeholder="Search...">
+          </div>
+        </form>
+      </div>
+      <div class="blog-recent-posts">
+        <h3>Recent Posts</h3>
+        <hr> {% for post in recent_posts %}
+        <a href="{{url_for('blog.post_detail', slug=post.slug)}}" class="sidebar-recent-posts-link">{{ post.title }}</a> {% endfor %}
+      </div>
+      <div class="blog-navigation">
+        <h3>Navigation</h3>
+        <hr>
+        <ul>
+          <li><a href="{{url_for('home.home')}}">Home</a></li>
+          <li><a href="{{url_for('blog.home')}}">Blog</a></li>
+        </ul>
+      </div>
+    </div>
+    <!-- END SIDEBAR -->
+  </div>
+  <!-- END CONTAINER -->
+</section>
+{% if current_user.role == "admin" %}
+<!-- Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deletePostModal" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title" id="deletePostModalTitle">Warning</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p class="delete-msg"></p>
+      </div>
+      <div class="modal-footer">
+        <form class="delete-form"><button class="btn btn-primary yes-btn">Yes</button></form>
+        <button class="btn btn-primary no-btn" data-dismiss="modal">No</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
+<script>var slug = "{{post.slug}}";</script>
+{% endblock %}

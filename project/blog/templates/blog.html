@@ -1,0 +1,78 @@
+{% extends "/blog/blog_base.html" %}
+{% block pagetitle %}Blog Index{% endblock %}
+{% block content %} 
+<section id="blog-index">
+  <div class="container">
+    <div class="col-md-8">  
+      {% for post in posts.items %}
+        <div class="blog-post clearfix">
+          <div class="blog-post-inner">
+            <a href="{{url_for('blog.post_detail', slug=post.slug)}}" class="blog-post-link">{{ post.title }}</a>
+            <p class="blog-post-date-author">
+              <span>
+                <span class="glyphicon glyphicon-user"></span>
+                <a href="{{ url_for ('users.profile', username=post.author.name) }}" class="author-profile-link">
+                  <strong>{{ post.author.name }}</strong>
+                </a>
+              </span>
+              <span>
+                <span class="glyphicon glyphicon-calendar"></span>
+                <strong>{{ moment(post.timestamp).format("MMMM DD, YYYY HH:mm") }}</strong>
+              </span>
+            </p>
+            <p>{{ post.content | truncate(300) | safe }}</p>
+            <a href="{{url_for('blog.post_detail', slug=post.slug)}}" class="btn btn-primary blog-post-link-button" role="button">Read More</a>
+          </div>    
+        </div>
+      {% endfor %}
+    </div>
+    
+    <div class="col-md-4 sidebar">
+      <div class="blog-search">
+          <h3>Search Posts</h3><hr>
+          <form class="form-inline" method="POST" action="{{ url_for('blog.search') }}" name="search">
+          {{ form.csrf_token }}
+            <div class="form-group">
+              <div class="input-icon-search">
+                <span class="glyphicon glyphicon-search"></span>
+              </div>
+              <input type="text" class="form-control" name="search" id="search" Placeholder="Search...">
+            </div>
+          </form>
+      </div>
+      
+      <div class="blog-recent-posts">
+        <h3>Recent Posts</h3><hr>
+        {% for post in recent_posts %}
+        <a href="{{url_for('blog.post_detail', slug=post.slug)}}" class="sidebar-recent-posts-link">{{ post.title }}</a>
+        {% else %}
+        <p>No Recent Posts</p>
+        {% endfor %}
+      </div>
+      <div class="blog-navigation">
+        <h3>Navigation</h3><hr>
+        <ul>
+          <li><a href="{{url_for('home.home')}}">Home</a></li>
+          <li><a href="{{url_for('blog.home')}}">Blog</a></li>
+        </ul>
+      </div>
+    </div>
+  </div><!-- END CONTAINER -->
+  
+  <div class="container text-center pagination-nav">
+    <div class="col-md-12">
+      {% if posts.has_prev %}
+        <a href="{{ url_for('blog.home', page=posts.prev_num) }}" class="pagination-link"><span class="glyphicon glyphicon-chevron-left"></span></a>
+        <a href="{{ url_for('blog.home', page=posts.prev_num) }}" class="pagination-link">{{posts.prev_num}}</a>
+      {% endif %}
+      {% if posts.page %}
+        <a href="{{url_for ('blog.home', page=posts.page) }}" class="pagination-link">{{posts.page}}</a>
+      {% endif %}
+      {% if posts.has_next %}
+        <a href="{{ url_for('blog.home', page=posts.next_num) }}" class="pagination-link">{{posts.next_num}}</a>
+        <a href="{{ url_for('blog.home', page=posts.next_num) }}" class="pagination-link"><span class="glyphicon glyphicon-chevron-right"></span></a>
+      {% endif %}
+    </div>
+  </div>
+</section> <!-- END BLOG POST INDEX -->
+{% endblock %}

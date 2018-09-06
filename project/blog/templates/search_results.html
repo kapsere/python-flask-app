@@ -1,0 +1,58 @@
+{% extends "/blog/blog_base.html" %}
+{% block metadescription %}Search Blog{% endblock %}
+{% block pagetitle %}Search Results{% endblock %}
+{% block content %}
+<section id="blog-search">
+  <div class="container">
+    <div class="col-md-8 search-results">
+      <h2 class="search-title">Displaying search results for "<strong>{{ query }}</strong>" :</h2>
+      {% for post in posts %}
+         <div class="blog-post clearfix">
+            <div class="blog-post-inner">
+              <a href="{{url_for('blog.post_detail', slug=post.slug)}}" class="blog-post-link"><h1 class="blog-post-title">{{ post.title }}</h1></a>
+              <p class="blog-post-date-author"><span class="glyphicon glyphicon-user"></span><strong>{{ post.author.name }}</strong>
+                 <span class="glyphicon glyphicon-calendar"></span><strong>{{ moment(post.timestamp).format("MMMM DD, YYYY HH:mm") }}</strong>
+              </p>
+              <p>{{ post.content | truncate(300) | safe }}</p>
+              <a href="{{url_for('blog.post_detail', slug=post.slug)}}" class="btn btn-primary blog-post-link-button" role="button">Read More</a>
+            </div>    
+        </div>
+      {% else %}
+      <p class="search"><br>Your search returned no results. Please try again...</p>
+      {% endfor %}
+    </div>
+    
+     <!-- SIDEBAR -->
+      <div class="col-md-4 sidebar">
+        <div class="blog-search">
+          <h3>Search Posts</h3><hr>
+          <form class="form-inline" method="POST" action="{{ url_for('blog.search') }}" name="search">
+          {{ form.csrf_token }}
+            <div class="form-group">
+              <div class="input-icon-search">
+                <span class="glyphicon glyphicon-search"></span>
+              </div>
+              <input type="text" class="form-control" name="search" id="search" Placeholder="Search...">
+            </div>
+          </form>
+        </div>
+        <div class="blog-recent-posts">
+          <h3>Recent Posts</h3><hr>
+            {% for post in recent_posts %}
+            <a href="{{url_for('blog.post_detail', slug=post.slug)}}" class="sidebar-recent-posts-link">{{ post.title }}</a>
+            {% else %}
+            <p>No Recent Posts</p>
+            {% endfor %}
+        </div>
+        <div class="blog-navigation">
+          <h3>Navigation</h3><hr>
+          <ul>
+            <li><a href="{{url_for('home.home')}}">Home</a></li>
+            <li><a href="{{url_for('blog.home')}}">Blog</a></li>
+          </ul>
+        </div>
+      </div>
+      <!-- END SIDEBAR -->
+  </div><!-- END CONTAINER -->
+</section>
+{% endblock %}
