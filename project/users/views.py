@@ -1,8 +1,8 @@
 from flask import flash, redirect, render_template, request, \
     url_for, Blueprint
 from flask_login import login_user, login_required, logout_user, current_user
-from .form import LoginForm, RegisterForm, ChangePasswordForm, EmailForm, PasswordForm,ProfileInfoForm,UploadForm
-from project import db,app
+from .form import LoginForm, RegisterForm, ChangePasswordForm, EmailForm, PasswordForm, ProfileInfoForm, UploadForm
+from project import db, app
 from project.models import User, bcrypt, BlogPost, Comments
 from project.token import generate_confirmation_token, confirm_token, generate_reset_token, reset_token
 import datetime
@@ -31,8 +31,6 @@ def login():
             user = User.query.filter_by(email=request.form['email']).first()
             if user is not None and bcrypt.check_password_hash(
                 user.password, request.form['password']):
-                    
-                
                 login_user(user)
                 user.last_seen = datetime.datetime.now()
                 db.session.commit()

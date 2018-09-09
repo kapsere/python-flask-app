@@ -52,7 +52,7 @@ Blogging/social app.
 > python manage.py runserver
 
 #### CKEditor file browser config
-> In project/static/ckeditor/config.js
+> In *project/static/ckeditor/config.js*  
 > Set config.imageBrowser_listUrl = "http://YourIpAddressOrWebsiteName/blog/files";
 
 ### TODO

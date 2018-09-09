@@ -3,6 +3,7 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 # default config
 class BaseConfig(object):
     DEBUG = False
+    """ Generate secret & salts using os.urandom() """
     SECRET_KEY = 'yoursecretkey'
     SECURITY_PASSWORD_SALT = 'yoursalt'
     PASSWORD_RESET_SALT = 'yoursalt'

@@ -1,4 +1,6 @@
 "use strict";
+/* User Profile Page */
+/* Comments/Posts slider */
 // Set Active class on carousel slider
 function setActiveClassCarousel() { 
 var posts = document.querySelectorAll('#posts-slider .carousel-inner .item'),
@@ -12,6 +14,7 @@ if (comments.length >= 1 ) {
   comments[0].classList.add('active');  
   }
 }
+
 setActiveClassCarousel();
 
 // Swipe for Bootstrap Carousel 
@@ -33,37 +36,41 @@ $(".carousel").on("touchstart", function(event){
             $(this).off("touchmove");
     });
 });
-// Flickity Options  
-var options = {
-  // options
-  cellAlign: 'left',
-  draggable : false,
-  contain: true,
-  pageDots: false,
-  lazyLoad:true,
-  wrapAround:true,
-  groupCells:4,
-  prevNextButtons: true,
-  arrowShape: { 
-  x0: 15,
-  x1: 60, y1: 50,
-  x2: 75, y2: 35,
-  x3: 45
-}};
-// enable prev/next buttons at 768px
-if ( matchMedia('screen and (max-width: 768px)').matches ) {
-   options.groupCells = false;
-   options.lazyLoad=true,
-   options.contain=true,
-   options.draggable = true;
-}
+
+/* Flickity for following/ followers tab */
 if ($('.main-carousel')) {
-$('.main-carousel').flickity(options);
-// Flickity container has wrong size when switching tabs bug fix //
-$('[href="#following"],[href="#followers"]').on( 'shown.bs.tab', function (e) {
-  $('.main-carousel').flickity('resize');
-});
+  // Flickity Options  
+  var options = {
+    // options
+    cellAlign: 'left',
+    draggable : false,
+    contain: true,
+    pageDots: false,
+    lazyLoad:true,
+    wrapAround:true,
+    groupCells:4,
+    prevNextButtons: true,
+    arrowShape: { 
+    x0: 15,
+    x1: 60, y1: 50,
+    x2: 75, y2: 35,
+    x3: 45
+  }};
+  // enable prev/next buttons at 768px
+  if ( matchMedia('screen and (max-width: 768px)').matches ) {
+     options.groupCells = false;
+     options.lazyLoad=true,
+     options.contain=true,
+     options.draggable = true;
+  }  
+  $('.main-carousel').flickity(options);
+    // Flickity container has wrong size when switching tabs bug fix
+    $('[href="#following"],[href="#followers"]').on( 'shown.bs.tab', function (e) {
+      $('.main-carousel').flickity('resize');
+  });
 }
+
+/* Blog */
 // init fancybox
 $(".gallery").fancybox({
   hideScrollbar : true
@@ -82,15 +89,7 @@ function makeLink(image){image.outerHTML = '<a target="_blank" class="gallery" d
 for(var i = 0, l = images.length; i < l; ++i){makeLink(images[i]);}
 }
 
-// Delete Posts
-if (document.querySelector('.delete-post')) {
-var postDeleteURL = Flask.url_for('blog.delete_post', {slug : slug}),  
-  deletePostBtn = document.querySelector('.delete-post');
-deletePostBtn.addEventListener('click',function(){
-  document.querySelector('.delete-msg').innerHTML = 'Are you sure you want to delete this post?';
-  document.querySelector('.delete-form').outerHTML = `<form class='delete-form' method='post' action=${postDeleteURL}>` + `<button class='btn btn-danger yes-btn'>` + "Yes" + `</button>` + `</form>`;
-}); 
-}
+/* Blog Comments */
 // Ajax load more comments
 if (document.querySelector('.load-more')) {
   $('.load-more').click(function(){
@@ -104,4 +103,15 @@ if (document.querySelector('.load-more')) {
       }
     });
   });
+}
+
+/* BLog Admin */
+// Delete Posts
+if (document.querySelector('.delete-post')) {
+var postDeleteURL = Flask.url_for('blog.delete_post', {slug : slug}),  
+  deletePostBtn = document.querySelector('.delete-post');
+deletePostBtn.addEventListener('click',function(){
+  document.querySelector('.delete-msg').innerHTML = 'Are you sure you want to delete this post?';
+  document.querySelector('.delete-form').outerHTML = `<form class='delete-form' method='post' action=${postDeleteURL}>` + `<button class='btn btn-danger yes-btn'>` + "Yes" + `</button>` + `</form>`;
+}); 
 }
