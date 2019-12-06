@@ -57,7 +57,6 @@ Blogging/social app.
 
 ### TODO
 - [ ] Update docs
-- [ ] Implement JWT 
 - [ ] Need better filebrowser implementation
 
 
